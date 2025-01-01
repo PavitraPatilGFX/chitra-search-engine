@@ -5,17 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chitra Search Engine</title>
   <style>
-    /* General Styles */
+    /* Global Styles */
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(135deg, #3c8ce7, #00eaff);
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0f0f10;
+      overflow: hidden;
     }
 
+    /* Grid Background */
     .grid {
       height: 800px;
       width: 800px;
@@ -28,16 +27,43 @@
       filter: blur(1px);
     }
 
-    #poda {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      position: relative;
-      width: 100%;
-      max-width: 350px;
+    /* Branding */
+    .branding {
+      position: absolute;
+      top: 20px; /* Adjust based on where you want the branding */
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      font-family: 'Arial', sans-serif;
+      color: #ffffff;
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Glow effect */
     }
 
+    /* Branding hover effect */
+    .branding:hover {
+      color: #cf30aa;
+      text-shadow: 0 0 20px #cf30aa, 0 0 30px #cf30aa;
+    }
+
+    /* Poda container for center alignment */
+    #poda {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    /* Search Box Container */
+    #main {
+      position: relative;
+    }
+
+    /* Search Input Field */
     .input {
       background-color: #010201;
       border: none;
@@ -49,142 +75,258 @@
       font-size: 18px;
     }
 
+    /* Placeholder Styling */
     .input::placeholder {
       color: #c0b9c0;
     }
 
+    /* Focused Input Field */
     .input:focus {
       outline: none;
     }
 
-    #main {
-      position: relative;
+    /* Input Mask */
+    #input-mask {
+      pointer-events: none;
+      width: 100px;
+      height: 20px;
+      position: absolute;
+      background: linear-gradient(90deg, transparent, black);
+      top: 18px;
+      left: 70px;
+    }
+
+    /* Pink Mask */
+    #pink-mask {
+      pointer-events: none;
+      width: 30px;
+      height: 20px;
+      position: absolute;
+      background: #cf30aa;
+      top: 10px;
+      left: 5px;
+      filter: blur(20px);
+      opacity: 0.8;
+      transition: all 2s;
+    }
+
+    /* Search Icons */
+    #filter-icon,
+    #search-icon {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      max-height: 40px;
+      max-width: 38px;
+      height: 100%;
       width: 100%;
     }
 
+    #filter-icon {
+      background: linear-gradient(180deg, #161329, black, #1d1b4b);
+      border: 1px solid transparent;
+      border-radius: 10px;
+    }
+
     #search-icon {
-      position: absolute;
       left: 20px;
       top: 15px;
     }
 
-    #results {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      border-radius: 10px;
-      display: none;
-      font-size: 14px;
-    }
-
-    .footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.8);
-      text-align: center;
-    }
-
-    .footer a {
-      color: #00eaff;
-      text-decoration: none;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* Additional Decorations */
-    .darkBorderBg, .white, .border, .glow {
-      height: 70px;
-      width: 314px;
-      position: absolute;
-      overflow: hidden;
-      border-radius: 12px;
-      filter: blur(3px);
-      z-index: -1;
-    }
-
+    /* Glow Effect */
     .glow {
+      overflow: hidden;
       filter: blur(30px);
       opacity: 0.4;
+      max-height: 130px;
+      max-width: 354px;
     }
 
-    .darkBorderBg::before, .white::before, .border::before, .glow::before {
-      content: "";
+    /* Mask Borders */
+    .white,
+    .border,
+    .darkBorderBg,
+    .glow {
+      max-height: 70px;
+      max-width: 314px;
+      height: 100%;
+      width: 100%;
       position: absolute;
+      overflow: hidden;
+      z-index: -1;
+      border-radius: 12px;
+      filter: blur(3px);
+    }
+
+    /* White Mask */
+    .white {
+      max-height: 63px;
+      max-width: 307px;
+      border-radius: 10px;
+      filter: blur(2px);
+    }
+
+    /* Border Mask */
+    .border {
+      max-height: 59px;
+      max-width: 303px;
+      border-radius: 11px;
+      filter: blur(0.5px);
+    }
+
+    /* Dark Border Background */
+    .darkBorderBg {
+      max-height: 65px;
+      max-width: 312px;
+    }
+
+    /* Transition Effect on Hover */
+    #poda:hover > .darkBorderBg::before {
+      transform: translate(-50%, -50%) rotate(-98deg);
+    }
+
+    #poda:hover > .glow::before {
+      transform: translate(-50%, -50%) rotate(-120deg);
+    }
+
+    #poda:hover > .white::before {
+      transform: translate(-50%, -50%) rotate(-97deg);
+    }
+
+    #poda:hover > .border::before {
+      transform: translate(-50%, -50%) rotate(-110deg);
+    }
+
+    /* Border Transitions */
+    .darkBorderBg::before {
+      content: "";
+      z-index: -2;
+      text-align: center;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) rotate(60deg);
-      width: 999px;
-      height: 999px;
-      background-image: conic-gradient(#000, #402fb5 5%, #000 38%, #000 50%, #cf30aa 60%, #000 87%);
+      transform: translate(-50%, -50%) rotate(82deg);
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      background-image: conic-gradient(
+        rgba(0, 0, 0, 0),
+        #18116a,
+        rgba(0, 0, 0, 0) 10%,
+        rgba(0, 0, 0, 0) 50%,
+        #6e1b60,
+        rgba(0, 0, 0, 0) 60%
+      );
       transition: all 2s;
     }
+
+    /* Keyframes for animation */
+    @keyframes rotate {
+      100% {
+        transform: translate(-50%, -50%) rotate(450deg);
+      }
+    }
+    @keyframes leftright {
+      0% {
+        transform: translate(0px, 0px);
+        opacity: 1;
+      }
+
+      49% {
+        transform: translate(250px, 0px);
+        opacity: 0;
+      }
+      80% {
+        transform: translate(-40px, 0px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translate(0px, 0px);
+        opacity: 1;
+      }
+    }
+
   </style>
 </head>
 <body>
+  <div class="grid"></div>
   <div id="poda">
-    <div class="grid"></div>
     <div class="glow"></div>
     <div class="darkBorderBg"></div>
     <div class="darkBorderBg"></div>
     <div class="darkBorderBg"></div>
+
     <div class="white"></div>
+
     <div class="border"></div>
+
+    <!-- Branding -->
+    <div class="branding">
+      <h1>Chitra Search Engine</h1>
+    </div>
+
     <div id="main">
-      <input placeholder="Search..." type="text" id="searchInput" class="input" />
+      <input placeholder="Search..." type="text" name="text" class="input" />
+      <div id="input-mask"></div>
+      <div id="pink-mask"></div>
+      <div class="filterBorder"></div>
+      <div id="filter-icon">
+        <svg
+          preserveAspectRatio="none"
+          height="27"
+          width="27"
+          viewBox="4.8 4.56 14.832 15.408"
+          fill="none"
+        >
+          <path
+            d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"
+            stroke="#d6d6e6"
+            stroke-width="1"
+            stroke-miterlimit="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
+        </svg>
+      </div>
       <div id="search-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24">
-          <circle r="8" cy="11" cx="11"></circle>
-          <line y2="16.65" y1="22" x2="16.65" x1="22"></line>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          height="24"
+          fill="none"
+          class="feather feather-search"
+        >
+          <circle stroke="url(#search)" r="8" cy="11" cx="11"></circle>
+          <line
+            stroke="url(#searchl)"
+            y2="16.65"
+            y1="22"
+            x2="16.65"
+            x1="22"
+          ></line>
+          <defs>
+            <linearGradient gradientTransform="rotate(50)" id="search">
+              <stop stop-color="#f8e7f8" offset="0%"></stop>
+              <stop stop-color="#b6a9b7" offset="50%"></stop>
+            </linearGradient>
+            <linearGradient id="searchl">
+              <stop stop-color="#b6a9b7" offset="0%"></stop>
+              <stop stop-color="#837484" offset="50%"></stop>
+            </linearGradient>
+          </defs>
         </svg>
       </div>
     </div>
-    <div id="results">
-      <!-- Search results will be displayed here -->
-    </div>
   </div>
-  <div class="footer">
-    Made with ❤️ by Chitra Team | Powered by ChatGPT
-  </div>
-
-  <script>
-    const searchInput = document.getElementById('searchInput');
-    const resultsContainer = document.getElementById('results');
-
-    searchInput.addEventListener('keypress', async (event) => {
-      if (event.key === 'Enter') {
-        const query = searchInput.value.trim();
-        if (!query) {
-          alert('Please enter a search query.');
-          return;
-        }
-
-        resultsContainer.style.display = 'block';
-        resultsContainer.innerHTML = `<p>Searching for "${query}"...</p>`;
-
-        try {
-          const response = await fetch('http://localhost:3000/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query })
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            const answer = data.choices[0]?.message?.content || "No results found.";
-            resultsContainer.innerHTML = `<p><strong>Results:</strong> ${answer}</p>`;
-          } else {
-            resultsContainer.innerHTML = `<p>Failed to fetch results.</p>`;
-          }
-        } catch (error) {
-          console.error(error);
-          resultsContainer.innerHTML = `<p>Error occurred. Please try again later.</p>`;
-        }
-      }
-    });
-  </script>
 </body>
 </html>
