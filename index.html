@@ -1,186 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chitra Search Engine</title>
-    <style>
-        /* Base Styles */
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #3c8ce7, #00eaff);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chitra Search Engine</title>
+  <style>
+    /* General Styles */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #3c8ce7, #00eaff);
+    }
 
-        .grid {
-            height: 800px;
-            width: 800px;
-            background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px),
-                linear-gradient(to bottom, #0f0f10 1px, transparent 1px);
-            background-size: 1rem 1rem;
-            background-position: center center;
-            position: absolute;
-            z-index: -1;
-            filter: blur(1px);
-        }
+    .grid {
+      height: 800px;
+      width: 800px;
+      background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px),
+        linear-gradient(to bottom, #0f0f10 1px, transparent 1px);
+      background-size: 1rem 1rem;
+      background-position: center center;
+      position: absolute;
+      z-index: -1;
+      filter: blur(1px);
+    }
 
-        .container {
-            position: relative;
-            text-align: center;
-            width: 90%;
-            max-width: 600px;
-        }
+    #poda {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+      width: 100%;
+      max-width: 350px;
+    }
 
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 20px;
-            text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-        }
+    .input {
+      background-color: #010201;
+      border: none;
+      width: 301px;
+      height: 56px;
+      border-radius: 10px;
+      color: white;
+      padding-inline: 59px;
+      font-size: 18px;
+    }
 
-        #poda {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
+    .input::placeholder {
+      color: #c0b9c0;
+    }
 
-        .input {
-            background-color: #010201;
-            border: none;
-            width: 301px;
-            height: 56px;
-            border-radius: 10px;
-            color: white;
-            padding-inline: 59px;
-            font-size: 18px;
-        }
+    .input:focus {
+      outline: none;
+    }
 
-        .input::placeholder {
-            color: #c0b9c0;
-        }
+    #main {
+      position: relative;
+      width: 100%;
+    }
 
-        .input:focus {
-            outline: none;
-        }
+    #search-icon {
+      position: absolute;
+      left: 20px;
+      top: 15px;
+    }
 
-        #main {
-            position: relative;
-        }
+    #results {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 10px;
+      display: none;
+      font-size: 14px;
+    }
 
-        #search-icon {
-            position: absolute;
-            left: 20px;
-            top: 15px;
-        }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+    }
 
-        #results {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            max-height: 300px;
-            overflow-y: auto;
-            text-align: left;
-            display: none;
-        }
+    .footer a {
+      color: #00eaff;
+      text-decoration: none;
+    }
 
-        .footer {
-            margin-top: 20px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-        }
+    .footer a:hover {
+      text-decoration: underline;
+    }
 
-        .footer a {
-            color: #00eaff;
-            text-decoration: none;
-        }
+    /* Additional Decorations */
+    .darkBorderBg, .white, .border, .glow {
+      height: 70px;
+      width: 314px;
+      position: absolute;
+      overflow: hidden;
+      border-radius: 12px;
+      filter: blur(3px);
+      z-index: -1;
+    }
 
-        .footer a:hover {
-            text-decoration: underline;
-        }
+    .glow {
+      filter: blur(30px);
+      opacity: 0.4;
+    }
 
-        /* Include the rest of your shared styles here */
-    </style>
+    .darkBorderBg::before, .white::before, .border::before, .glow::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(60deg);
+      width: 999px;
+      height: 999px;
+      background-image: conic-gradient(#000, #402fb5 5%, #000 38%, #000 50%, #cf30aa 60%, #000 87%);
+      transition: all 2s;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">Chitra Search Engine</div>
-        <div id="poda">
-            <div class="grid"></div>
-            <div class="glow"></div>
-            <div class="darkBorderBg"></div>
-            <div class="darkBorderBg"></div>
-            <div class="darkBorderBg"></div>
-            <div class="white"></div>
-            <div class="border"></div>
-            <div id="main">
-                <input placeholder="Search..." type="text" id="searchInput" class="input" />
-                <div id="search-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24">
-                        <circle r="8" cy="11" cx="11"></circle>
-                        <line y2="16.65" y1="22" x2="16.65" x1="22"></line>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        <div id="results">
-            <!-- Search results will appear here -->
-        </div>
-        <div class="footer">
-            Made with ❤️ by Chitra Team | Powered by <strong>ChatGPT</strong>
-        </div>
+  <div id="poda">
+    <div class="grid"></div>
+    <div class="glow"></div>
+    <div class="darkBorderBg"></div>
+    <div class="darkBorderBg"></div>
+    <div class="darkBorderBg"></div>
+    <div class="white"></div>
+    <div class="border"></div>
+    <div id="main">
+      <input placeholder="Search..." type="text" id="searchInput" class="input" />
+      <div id="search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24">
+          <circle r="8" cy="11" cx="11"></circle>
+          <line y2="16.65" y1="22" x2="16.65" x1="22"></line>
+        </svg>
+      </div>
     </div>
+    <div id="results">
+      <!-- Search results will be displayed here -->
+    </div>
+  </div>
+  <div class="footer">
+    Made with ❤️ by Chitra Team | Powered by ChatGPT
+  </div>
 
-    <script>
-        async function searchFunction(event) {
-            event.preventDefault();
-            const query = document.getElementById('searchInput').value.trim();
-            const resultsContainer = document.getElementById('results');
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const resultsContainer = document.getElementById('results');
 
-            if (query) {
-                resultsContainer.style.display = "block";
-                resultsContainer.innerHTML = `<p>Searching for "${query}"...</p>`;
-
-                try {
-                    const response = await fetch('http://localhost:3000/search', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ query })
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        const answer = data.choices[0]?.message?.content || "No results found.";
-                        resultsContainer.innerHTML = `<p><strong>ChatGPT Response:</strong> ${answer}</p>`;
-                    } else {
-                        throw new Error("Failed to fetch results.");
-                    }
-                } catch (error) {
-                    console.error(error);
-                    resultsContainer.innerHTML = `<p>Sorry, something went wrong. Please try again later.</p>`;
-                }
-            } else {
-                resultsContainer.style.display = "none";
-                alert("Please enter a search term.");
-            }
+    searchInput.addEventListener('keypress', async (event) => {
+      if (event.key === 'Enter') {
+        const query = searchInput.value.trim();
+        if (!query) {
+          alert('Please enter a search query.');
+          return;
         }
 
-        document.getElementById('searchInput').addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                searchFunction(event);
-            }
-        });
-    </script>
+        resultsContainer.style.display = 'block';
+        resultsContainer.innerHTML = `<p>Searching for "${query}"...</p>`;
+
+        try {
+          const response = await fetch('http://localhost:3000/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const answer = data.choices[0]?.message?.content || "No results found.";
+            resultsContainer.innerHTML = `<p><strong>Results:</strong> ${answer}</p>`;
+          } else {
+            resultsContainer.innerHTML = `<p>Failed to fetch results.</p>`;
+          }
+        } catch (error) {
+          console.error(error);
+          resultsContainer.innerHTML = `<p>Error occurred. Please try again later.</p>`;
+        }
+      }
+    });
+  </script>
 </body>
 </html>
